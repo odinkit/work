@@ -1,0 +1,37 @@
+# Импортируем необходимые библиотеки
+import requests
+
+# Функция для получения текущей цены криптовалюты
+def get_crypto_price(crypto_symbol, currency='USD'):
+    url = f'https://api.coingecko.com/api/v3/simple/price?ids={crypto_symbol}&vs_currencies={currency}'
+    response = requests.get(url).json()
+    return response[crypto_symbol][currency]
+
+# Функция для расчета прибыли
+def calculate_profit(initial_investment, initial_price, current_price):
+    # Количество криптовалюты, купленной на начальную инвестицию
+    amount_of_crypto = initial_investment / initial_price
+    # Текущая стоимость этой криптовалюты
+    current_value = amount_of_crypto * current_price
+    # Прибыль
+    profit = current_value - initial_investment
+    return profit
+
+# Основная часть программы
+if __name__ == '__main__':
+    # Входные данные
+    crypto_symbol = 'bitcoin'  # Символ криптовалюты, например 'bitcoin'
+    initial_investment = 1000  # Начальная инвестиция в долларах США
+    initial_price = 50000      # Цена криптовалюты на момент покупки
+
+    # Получение текущей цены криптовалюты
+    current_price = get_crypto_price(crypto_symbol)
+
+    # Расчет прибыли
+    profit = calculate_profit(initial_investment, initial_price, current_price)
+
+    # Вывод результатов
+    print(f'Начальная инвестиция: ${initial_investment}')
+    print(f'Цена криптовалюты на момент покупки: ${initial_price}')
+    print(f'Текущая цена криптовалюты: ${current_price}')
+    print(f'Прибыль: ${profit:.2f}')
